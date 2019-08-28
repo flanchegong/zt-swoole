@@ -16,3 +16,9 @@
 //});
 
 Route::get('/', 'IndexController@index');
+
+Route::get('/task/test', function () {
+    $task = new \App\Jobs\TestTask('测试异步任务');
+    $success = \Hhxsv5\LaravelS\Swoole\Task\Task::deliver($task);  // 异步投递任务，触发调用任务类的 handle 方法
+    var_dump($success);
+});
