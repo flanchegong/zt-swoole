@@ -26,9 +26,10 @@ class PushRepository extends BaseRepository
      * 初始化swoole
      */
     private function __initSwoole(){
-        $host = Config::get('swoole.host');
-        $port = Config::get('swoole.port');
-        $setConf = Config::get('swoole.set');
+//        $host = Config::get('swoole.host');
+        $host='127.0.0.1';
+        $port = '9521';
+        $setConf = array('timeout'=>5,'keep_alive'=>true,'websocket_mask'=>true);
 
         $this->__serv = new Server($host,$port);
         $this->__serv->set($setConf);
