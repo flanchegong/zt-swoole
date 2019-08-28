@@ -13,8 +13,7 @@
         "hhxsv5/laravel-s": "^3.5",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
-        "php-ai/php-ml": "^0.8.0",
-        "swooletw/laravel-swoole": "^2.5"
+        "php-ai/php-ml": "^0.8.0"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
