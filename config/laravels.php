@@ -7,7 +7,7 @@ return [
     'listen_ip'                => env('LARAVELS_LISTEN_IP', '127.0.0.1'),
     'listen_port'              => env('LARAVELS_LISTEN_PORT', 5200),
     'socket_type'              => defined('SWOOLE_SOCK_TCP') ? SWOOLE_SOCK_TCP : 1,
-    'enable_coroutine_runtime' => false,
+    'enable_coroutine_runtime' => true,//表示可以在运行时动态将基于php_stream 实现的扩展、PHP 网络客户端代码一键协程化，该特性需要 Swoole 4.1.0 及以上版本才支持，这些扩展目前包括 PHP 官方 redis、pdo、mysqli 扩展等。
     'server'                   => env('LARAVELS_SERVER', 'LaravelS'),
     'handle_static'            => env('LARAVELS_HANDLE_STATIC', false),
     'laravel_base_path'        => env('LARAVEL_BASE_PATH', base_path()),
@@ -20,8 +20,8 @@ return [
     ],
     'event_handlers'           => [],
     'websocket'                => [
-        'enable' => false,
-        //'handler' => XxxWebSocketHandler::class,
+        'enable' => true,
+        'handler' => \App\Services\WebSocketService::class,
     ],
     'sockets'                  => [],
     'processes'                => [
@@ -32,13 +32,13 @@ return [
         ],
     ],
     'timer'                    => [
-        'enable'        => false,
+        'enable'        => true,
         'jobs'          => [
             // Enable LaravelScheduleJob to run `php artisan schedule:run` every 1 minute, replace Linux Crontab
             //\Hhxsv5\LaravelS\Illuminate\LaravelScheduleJob::class,
             // Two ways to configure parameters:
             // [\App\Jobs\XxxCronJob::class, [1000, true]], // Pass in parameters when registering
-            // \App\Jobs\XxxCronJob::class, // Override the corresponding method to return the configuration
+             \App\Jobs\Timer\TestCronJob::class, // Override the corresponding method to return the configuration
         ],
         'max_wait_time' => 5,
     ],
@@ -78,8 +78,10 @@ return [
         'reload_async'       => true,
         'max_wait_time'      => 60,
         'enable_reuse_port'  => true,
-        'enable_coroutine'   => false,
+        'enable_coroutine'   => true,//在 LaravelS 代码中启用 Swoole 协程
         'http_compression'   => false,
+        'heartbeat_idle_time'      => 600,
+        'heartbeat_check_interval' => 60,
 
         // Slow log
         // 'request_slowlog_timeout' => 2,
