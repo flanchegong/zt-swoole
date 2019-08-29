@@ -31,5 +31,6 @@ class TestTask extends Task
     {
         Log::info(__CLASS__ . ': 任务处理完成', [$this->result]);
         // 可以在这里触发后续要执行的任务，或者执行其他善后逻辑
+        Task::deliver(new TestTask2('task2')); // 投递其他任务
     }
 }

@@ -18,12 +18,27 @@ return [
         'excluded_dirs' => [],
         'log'           => true,
     ],
-    'event_handlers'           => [],
+    'event_handlers'           => [
+        'BeforeStart' => \App\Event\BeforeStartEvent::class,
+        'WorkerStart' => \App\Event\WorkerStartEvent::class,
+    ],
     'websocket'                => [
         'enable' => true,
         'handler' => \App\Services\WebSocketService::class,
+
     ],
-    'sockets'                  => [],
+    'sockets' => [
+        [
+            'host'     => '127.0.0.1',
+            'port'     => 5291,
+            'type'     => SWOOLE_SOCK_TCP,// 支持的嵌套字类型：https://wiki.swoole.com/wiki/page/16.html#entry_h2_0
+            'settings' => [// Swoole可用的配置项：https://wiki.swoole.com/wiki/page/526.html
+                'open_eof_check' => true,
+                'package_eof'    => "\r\n",
+            ],
+            'handler'  => \App\Sockets\TestTcpSocket::class,
+        ],
+    ],
     'processes'                => [
         [
             'class'    => \App\Processes\TestProcess::class,
@@ -42,14 +57,32 @@ return [
         ],
         'max_wait_time' => 5,
     ],
-    'events'                   => [],
-    'swoole_tables'            => [],
+    'events' => [
+        \App\Event\TestEvent::class => [
+            \App\Listener\TestListener1::class,
+        ],
+    ],
+    'swoole_tables'  => [
+        // 场景：WebSocket中UserId与FD绑定
+        'ws' => [// Key为Table名称，使用时会自动添加Table后缀，避免重名。这里定义名为wsTable的Table
+            'size'   => 102400,//Table的最大行数
+            'column' => [// Table的列定义
+                ['name' => 'value', 'type' => \Swoole\Table::TYPE_INT, 'size' => 8],
+            ],
+        ],
+        //...继续定义其他Table
+    ],
     'register_providers'       => [],
     'cleaners'                 => [
-        //Hhxsv5\LaravelS\Illuminate\Cleaners\SessionCleaner::class, // If you use the session or authentication in your project, please uncomment this line
-        //Hhxsv5\LaravelS\Illuminate\Cleaners\AuthCleaner::class,    // If you use the authentication or passport in your project, please uncomment this line
-        //Hhxsv5\LaravelS\Illuminate\Cleaners\JWTCleaner::class,     // If you use the package "tymon/jwt-auth" in your project, please uncomment this line
-        // ...
+        // If you use the session or authentication in your project, please uncomment this line
+        //Hhxsv5\LaravelS\Illuminate\Cleaners\SessionCleaner::class,
+
+        // If you use the authentication or passport in your project, please uncomment this line
+        //Hhxsv5\LaravelS\Illuminate\Cleaners\AuthCleaner::class,
+
+        // If you use the package "tymon/jwt-auth" in your project, please uncomment this line
+        //Hhxsv5\LaravelS\Illuminate\Cleaners\JWTCleaner::class,
+
     ],
     'destroy_controllers'      => [
         'enable'        => false,

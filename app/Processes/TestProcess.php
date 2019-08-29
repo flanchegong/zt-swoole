@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Log;
 use Swoole\Coroutine;
 use Swoole\Http\Server;
 use Swoole\Process;
-
 class TestProcess implements CustomProcessInterface
 {
     public static function getName()
