@@ -22,13 +22,12 @@ class EventServiceProvider extends ServiceProvider
 
     /**
      * Register any events for your application.
-     *
+     * @param  Illuminate\Events\Dispatcher  $events
      * @return void
      */
-    public function boot()
+    public function boot($events)
     {
         parent::boot();
-        $events=Event::listen();
 
         $events->listen('laravels.received_request', function (\Illuminate\Http\Request $req, $app) {
             $req->query->set('get_key', 'hhxsv5');// 修改querystring
