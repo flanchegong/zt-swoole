@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Providers;
-
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Http\Response;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -22,20 +23,20 @@ class EventServiceProvider extends ServiceProvider
 
     /**
      * Register any events for your application.
-     * @param  Illuminate\Events\Dispatcher  $events
+     * @param
      * @return void
      */
-    public function boot($events)
+    public function boot()
     {
         parent::boot();
 
-        $events->listen('laravels.received_request', function (\Illuminate\Http\Request $req, $app) {
-            $req->query->set('get_key', 'hhxsv5');// 修改querystring
-            $req->request->set('post_key', 'hhxsv5'); // 修改post body
+        Event::listen('laravels.received_request', function (Request $request, $app) {
+            $request->query->set('get_key', 'swoole-get-param');// 修改 GET 请求参数
+            $request->request->set('post_key', 'swoole-post-param'); // 修改 POST 请求参数
         });
 
-        $events->listen('laravels.generated_response', function (\Illuminate\Http\Request $req, \Symfony\Component\HttpFoundation\Response $rsp, $app) {
-            $rsp->headers->set('header-key', 'hhxsv5');// 修改header
+        Event::listen('laravels.generated_response', function (Request $request, Response $response, $app) {
+            $response->headers->set('header-key', 'swoole-header');
         });
     }
 }
