@@ -20,7 +20,8 @@ return [
     ],
     'event_handlers'           => [
         'BeforeStart' => \App\Event\BeforeStartEvent::class,
-        'WorkerStart' => \App\Event\WorkerStartEvent::class,
+       // 'WorkerStart' => \App\Event\WorkerStartEvent::class,
+        'WorkerStart' => \App\Listener\WorkerStartEventListener::class,
     ],
     'websocket'                => [
         'enable' => true,

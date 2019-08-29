@@ -1,9 +1,10 @@
 <?php
 namespace App\Listener;
-
-use Hhxsv5\LaravelS\Swoole\Task\Task;
+use App\Event\TestEvent;
 use Hhxsv5\LaravelS\Swoole\Task\Event;
 use Hhxsv5\LaravelS\Swoole\Task\Listener;
+use Illuminate\Support\Facades\Log;
+use Hhxsv5\LaravelS\Swoole\Task\Task;
 class TestListener1 extends Listener
 {
     // 声明没有参数的构造函数
@@ -12,7 +13,7 @@ class TestListener1 extends Listener
     }
     public function handle(Event $event)
     {
-        \Log::info(__CLASS__ . ':handle start', [$event->getData()]);
+        Log::info(__CLASS__ . ':handle start', [$event->getData()]);
         sleep(2);// 模拟一些慢速的事件处理
         // 监听器中也可以投递Task，但不支持Task的finish()回调。
         // 注意：

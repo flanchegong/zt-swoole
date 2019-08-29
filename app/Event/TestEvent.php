@@ -8,6 +8,8 @@ class TestEvent extends Event
     {
         $this->data = $data;
     }
+
+
     public function getData()
     {
         return $this->data;
